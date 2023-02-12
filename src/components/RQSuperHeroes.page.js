@@ -3,15 +3,20 @@ import axios from 'axios';
 
 // ! Funktion für den API-Call
 const fetchSuperHeroes = () => {
-  return axios.get('http://localhost:4000/superheroes1');
+  return axios.get('http://localhost:4000/superheroes');
 };
 
 export const RQSuperHeroesPage = () => {
   // ! React Query
-  const { isLoading, data, isError, error } = useQuery(
+  const { isLoading, data, isError, error, isFetching } = useQuery(
     'super-heroes',
-    fetchSuperHeroes
+    fetchSuperHeroes,
+    {
+      cacheTime: 5000,
+    }
   );
+
+  console.log({ isLoading, isFetching });
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -24,7 +29,7 @@ export const RQSuperHeroesPage = () => {
     <>
       <h2>React Query Super Heroes Page</h2>
       {data?.data.map((hero) => {
-        return <div>{hero.name}</div>;
+        return <div key={hero.id}>{hero.name}</div>;
       })}
     </>
   );
