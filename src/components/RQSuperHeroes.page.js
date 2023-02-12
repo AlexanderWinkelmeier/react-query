@@ -12,7 +12,8 @@ export const RQSuperHeroesPage = () => {
     'super-heroes',
     fetchSuperHeroes,
     {
-      staleTime: 30000,
+      refetchOnMount: true, //alt: false; "always"
+      refetchOnWindowFocus: true, // alt: false; "always"
     }
   );
 
