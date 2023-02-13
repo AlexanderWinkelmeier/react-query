@@ -1,11 +1,5 @@
-import { useQuery } from 'react-query';
-import axios from 'axios';
-
-// ! Funktion für den API-Call
-const fetchSuperHeroes = () => {
-  return axios.get('http://localhost:4000/superheroes');
-};
-
+import { useSuperHeroesData } from '../hooks/useSuperHeroesData';
+import { Link } from 'react-router-dom';
 export const RQSuperHeroesPage = () => {
   const onSuccess = (data) => {
     console.log('Perform side effect after data fetching', data);
@@ -15,19 +9,8 @@ export const RQSuperHeroesPage = () => {
   };
 
   // ! React Query
-  const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
-    'super-heroes',
-    fetchSuperHeroes,
-    {
-      onSuccess: onSuccess,
-      onError: onError,
-      select: (data) => {
-        // data ist der Response von der API
-        const superHeroNames = data.data.map((hero) => hero.name);
-        return superHeroNames;
-      },
-    }
-  );
+  const { isLoading, data, isError, error, isFetching, refetch } =
+    useSuperHeroesData(onSuccess, onError);
 
   console.log({ isLoading, isFetching });
 
@@ -42,14 +25,18 @@ export const RQSuperHeroesPage = () => {
     <>
       <h2>React Query Super Heroes Page</h2>
       <button onClick={refetch}>Fetch heroes</button>
-      {/* {data?.data.map((hero) => {
-        return <div key={hero.id}>{hero.name}</div>;
-      })} */}
+      {data?.data.map((hero) => {
+        return (
+          <div key={hero.id}>
+            <Link to={`/rq-super-heroes/${hero.id}`}>{hero.name}</Link>
+          </div>
+        );
+      })}
 
       {/* data ist hier jetz superHeroNames !! */}
-      {data.map((heroName) => {
+      {/* {data.map((heroName) => {
         return <div key={heroName}>{heroName}</div>;
-      })}
+      })} */}
     </>
   );
 };
