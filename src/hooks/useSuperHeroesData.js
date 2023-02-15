@@ -29,10 +29,16 @@ export const useAddSuperHeroData = () => {
   // eine Instanz von useQueryClient erstellen
   const queryClient = useQueryClient();
   return useMutation(addSuperHero, {
-    // erfolgt eine Mutation, so werden die derzeitigen Abfragen als invalide deklariert und
-    // ein neuer Abruf gestartet, um aktuelle Daten zu haben
-    onSuccess: () => {
-      queryClient.invalidateQueries('super-heroes');
+    // data ist der gesamte Response aus dem POST-Request
+    onSuccess: (data) => {
+      // die alten Abfrage-Daten die Response aus dem POST-Request anfügen und die Abfrage-Daten
+      // dadurch aktualisieren
+      queryClient.setQueryData('super-heroes', (oldQueryData) => {
+        return {
+          ...oldQueryData,
+          data: [...oldQueryData.data, data.data],
+        };
+      });
     },
   });
 };

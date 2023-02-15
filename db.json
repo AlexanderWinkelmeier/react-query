@@ -19,6 +19,11 @@
       "name": "Mr. Perfect",
       "alterEgo": "Tony Maroni",
       "id": 4
+    },
+    {
+      "name": "Cat Woman",
+      "alterEgo": "Selina Kyle",
+      "id": 5
     }
   ],
   "friends": [
@@ -44,7 +49,11 @@
   "channels": [
     {
       "id": "codevolution",
-      "courses": ["react", "vue", "angular"]
+      "courses": [
+        "react",
+        "vue",
+        "angular"
+      ]
     }
   ],
   "colors": [
