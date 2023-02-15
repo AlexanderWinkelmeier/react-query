@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 
 // ! Fetcher-Funktion für den API-Call
@@ -26,5 +26,13 @@ export const useSuperHeroesData = (onSuccess, onError) => {
 
 // * Custom Hook für Mutationen
 export const useAddSuperHeroData = () => {
-  return useMutation(addSuperHero);
+  // eine Instanz von useQueryClient erstellen
+  const queryClient = useQueryClient();
+  return useMutation(addSuperHero, {
+    // erfolgt eine Mutation, so werden die derzeitigen Abfragen als invalide deklariert und
+    // ein neuer Abruf gestartet, um aktuelle Daten zu haben
+    onSuccess: () => {
+      queryClient.invalidateQueries('super-heroes');
+    },
+  });
 };
