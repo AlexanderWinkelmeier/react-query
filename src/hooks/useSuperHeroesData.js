@@ -1,5 +1,4 @@
-import { useQuery } from 'react-query';
-
+import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
 
 // ! Fetcher-Funktion für den API-Call
@@ -7,6 +6,12 @@ const fetchSuperHeroes = () => {
   return axios.get('http://localhost:4000/superheroes');
 };
 
+// ! Mutation-Funktion für den API-Call
+const addSuperHero = (hero) => {
+  return axios.post('http://localhost:4000/superheroes', hero);
+};
+
+// * Custom Hook für Abfragen
 export const useSuperHeroesData = (onSuccess, onError) => {
   return useQuery('super-heroes', fetchSuperHeroes, {
     onSuccess: onSuccess,
@@ -17,4 +22,9 @@ export const useSuperHeroesData = (onSuccess, onError) => {
     //   return superHeroNames;
     // },
   });
+};
+
+// * Custom Hook für Mutationen
+export const useAddSuperHeroData = () => {
+  return useMutation(addSuperHero);
 };
